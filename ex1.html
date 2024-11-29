@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <h1>We are using loop here</h1>
+    <p>For loop and while loop and do-while loop</p>
+    <h1>demo on array mathod</h1>
+</body>
+<script>
+const person = {
+    name: 'kamal',
+    age: 25,
+    job: 'frontendDevloper'
+};
+
+const values = Object.values(person);
+console.log(values);
+
+// second output [hellow world]
+let text = "Hello,World,How,Are,You";
+let result = text.split(",");
+
+console.log(result); //[ hellow, World, How are You output will come]
+
+let a = 5;
+let b = '5';
+
+console.log(a == 1); 
+console.log(6 === 6); 
+
+let word = "Hello kamal";
+let letters = word.split("");
+console.log(letters); // Output: ["H", "e", "l", "l", "o"]
+
+
+
+let c = 7;
+let d = '8';
+console.log(6==6);
+console.log(8===8) // [output will come true becuse we are using === both are the equal]
+
+
+// here using for loop here
+for (let i = 2; i <= 3; i++) {
+    console.log("hellow, world");
+}
+
+for (let i = 0; i <= 6; i++) {
+    console.log(i);    // [output will come to the 0 to  6]
+}
+// im using for loop is code
+for (let i = 7; i < 8; i++){
+    console.log(i);   // [output will come to the 0 to 8]
+}
+
+// using while loop here
+let i = 0; // [Initialize a counter]
+while (i < 5) { // [condition]
+  console.log(i); // [Output the counter]
+  i++; // [Increment the counter]
+}
+
+while (true) {
+  console.log("This will run unself condition loop");
+  break; // stop the infinity loop sondtion 
+}
+
+while (false) {
+  console.log("This will run unself condition loop");
+  break; // this code will not run throw error 
+}
+
+// here using do while loop
+let j = 10;
+do {
+  console.log(i);
+  i++;
+} while (j < 10);    // output will come 5   
+
+
+ 
+// here im using map
+// let users = [
+//   { name: "Alice", age: 25 },
+//   { name: "Bob", age: 30 },
+//   { name: "Charlie", age: 35 }
+// ];
+
+// let names = users.map(user => user.name);
+
+// console.log(names); // Output will come ["Alice", "Bob", "Charlie"]
+
+
+//map
+const users = [
+    { id: 1, name: "kamal" },
+    { id: 2, name: "nayan" },
+    { id: 3, name: "tiwari" },
+];
+
+//  any id can select 1 output will come kamal
+const user = users.find(u => u.id===1);
+console.log(user); // output id ("kamal")
+
+</script>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>India State and District Data</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .container {
+                width: 60%;
+                margin: auto;
+                text-align: center;
+            }
+            .card {
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+                padding: 16px;
+                margin: 20px auto;
+                width: 60%;
+                background-image: linear-gradient(to right, rgba(26, 26, 172, 0.608) , rgba(0, 128, 0, 0.796));
+            }
+            .card h3 {
+                color: #333;
+            }
+            .card ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            .card li {
+                padding: 4px 0;
+            }
+            .select-container {
+                margin: 20px;
+            }
+            select {
+                margin: 10px;
+                padding: 8px;
+                font-size: 16px;
+                width: 20rem;
+            }
+            .state{
+                color: white;
+                text-shadow: 3px 2px rgba(13, 13, 174, 0.777);
+            }
+            .kamal{
+                border-radius: 7px;
+            }
+            .districts{
+            color: white;
+            }
+            .a{
+                background-color: white;
+            }
+            .card1{
+                background-color: white;
+                /* border: 1px solid rgba(55, 53, 53, 0.765); */
+                border-radius: 7px;
+                color: rgba(41, 40, 40, 0.655);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="card">
+                <h1 class="state">State and District Data</h1>
+                <p class="districts">Select state and District Show all Data</p>
+                <div class="select-container">
+                    <select id="stateSelect" onchange="populateDistricts()" class="kamal">
+                        <option value="">Select a State</option>
+                    </select>
+                    <select id="districtSelect" style="display: none" onchange="displayDistrictData()" class="kamal">
+                        <option value="">Select a District</option>
+                    </select>
+                </div>
+ 
+                <!-- Card to display district data -->
+                <div id="dataCard" class="card1" style="display: none">
+                    <h3 id="districtName"></h3>
+                    <p>
+                        <strong>Population:</strong>
+                        <span id="districtPopulation"></span>
+                    </p>
+                    <p>
+                        <strong>Literacy Rate:</strong>
+                        <span id="districtLiteracyRate"></span>%
+                    </p>
+                    <p>
+                        <strong>Male Population:</strong>
+                        <span id="districtMalePopulation"></span>
+                    </p>
+                    <p>
+                        <strong>Female Population:</strong>
+                        <span id="districtFemalePopulation"></span>
+                    </p>
+                    <p>
+                        <strong>Child Population:</strong>
+                        <span id="districtChildPopulation"></span>
+                    </p>
+                    <p>
+                        <strong>Mortality Rate:</strong>
+                        <span id="districtMortalityRate"></span>%
+                    </p>
+                    <p>
+                        <strong>Schools:</strong>
+                        <span id="districtSchools"></span>
+                    </p>
+                    <p>
+                        <strong>Colleges:</strong>
+                        <span id="districtColleges"></span>
+                    </p>
+                    <p>
+                        <strong>Hospitals:</strong>
+                        <span id="districtHospitals"></span>
+                    </p>
+                    <p>
+                        <strong>Development Index:</strong>
+                        <span id="districtDevelopmentIndex"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+ 
+        <script>
+            let indiaData;
+            // Fetch and populate state data
+            async function fetchData() {
+                try {
+                    const response = await fetch("indiacensus.json"); // Ensure the file is accessible
+                    indiaData = await response.json();
+ 
+                    const stateSelect = document.getElementById("stateSelect");
+                    indiaData.forEach((state) => {
+                        const option = document.createElement("option");
+                        option.value = state.state;
+                        option.textContent = state.state;
+                        stateSelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            }
+ 
+            // Populate districts based on the selected state
+            function populateDistricts() {
+                const selectedStateName =
+                    document.getElementById("stateSelect").value;
+                const stateData = indiaData.find(
+                    (state) => state.state === selectedStateName
+                );
+ 
+                const districtSelect =
+                    document.getElementById("districtSelect");
+                districtSelect.style.display = "initial"; // Show district dropdown
+                districtSelect.innerHTML =
+                    '<option value="">Select a District</option>'; // Reset districts
+ 
+                if (stateData) {
+                    stateData.districts.forEach((district) => {
+                        const option = document.createElement("option");
+                        option.value = district.name;
+                        option.textContent = district.name;
+                        districtSelect.appendChild(option);
+                    });
+                }
+            }
+ 
+            // Display data for the selected district
+            function displayDistrictData() {
+                const selectedStateName =
+                    document.getElementById("stateSelect").value;
+                const selectedDistrictName =
+                    document.getElementById("districtSelect").value;
+ 
+                const stateData = indiaData.find(
+                    (state) => state.state === selectedStateName
+                );
+                const districtData = stateData
+                    ? stateData.districts.find(
+                          (district) => district.name === selectedDistrictName
+                      )
+                    : null;
+ 
+                if (districtData) {
+                    document.getElementById("dataCard").style.display = "block";
+ 
+                    document.getElementById("districtName").textContent =
+                        districtData.name;
+                    document.getElementById("districtPopulation").textContent =
+                        districtData.population;
+                    document.getElementById(
+                        "districtLiteracyRate"
+                    ).textContent = districtData.literacy_rate;
+                    document.getElementById(
+                        "districtMalePopulation"
+                    ).textContent = districtData.men_population;
+                    document.getElementById(
+                        "districtFemalePopulation"
+                    ).textContent = districtData.women_population;
+                    document.getElementById(
+                        "districtChildPopulation"
+                    ).textContent = districtData.child_population;
+                    document.getElementById(
+                        "districtMortalityRate"
+                    ).textContent = districtData.mortality_rate;
+                    document.getElementById("districtSchools").textContent =
+                        districtData.schools;
+                    document.getElementById("districtColleges").textContent =
+                        districtData.colleges;
+                    document.getElementById("districtHospitals").textContent =
+                        districtData.hospitals;
+                    document.getElementById(
+                        "districtDevelopmentIndex"
+                    ).textContent = districtData.development_index;
+                } else {
+                    document.getElementById("dataCard").style.display = "none";
+                }
+            }
+ 
+            // Initialize state dropdown on page load
+            window.onload = fetchData;
+        </script>
+    </body>
+</html>
